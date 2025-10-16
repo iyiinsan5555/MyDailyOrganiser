@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Day Planner</title>
+<style>
+  :root{
+    --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#4f46e5;
+    --success:#10b981; --danger:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background:linear-gradient(180deg,#071024 0%, #07162a 100%); color:#e6eef8;
+    min-height:100vh; padding:28px;
+  }
+
+  .wrap{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:360px 1fr;gap:20px}
+  header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
+  h1{font-size:20px;margin:0}
+  .top-controls{display:flex;gap:8px;align-items:center}
+
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  input[type="time"], input[type="text"], textarea, select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-size:14px}
+  textarea{min-height:80px;resize:vertical;padding-top:10px}
+  button{background:var(--accent);color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+  button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+  .small{font-size:13px;color:var(--muted)}
+
+  /* Task list */
+  .tasks{display:flex;flex-direction:column;gap:10px}
+  .task{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+  .time-pill{min-width:78px;padding:8px;border-radius:8px;text-align:center;font-weight:700}
+  .task-body{flex:1}
+  .task-title{display:flex;justify-content:space-between;gap:12px;align-items:center}
+  .title-left{display:flex;gap:8px;align-items:center}
+  .importance{padding:6px 8px;border-radius:8px;font-weight:700}
+  .imp-1{background:#052f17;color:var(--success);border:1px solid rgba(16,185,129,0.12)}
+  .imp-2{background:#153036;color:#6ee7b7}
+  .imp-3{background:#2a2540;color:#fbbf24}
+  .imp-4{background:#3a1b1b;color:#fb923c}
+  .imp-5{background:#3b0b0b;color:var(--danger)}
+  .desc{margin-top:6px;color:var(--muted);font-size:14px;max-height:40px;overflow:hidden;transition:all .18s ease}
+  .desc.expanded{max-height:400px}
+  .actions{display:flex;gap:8px}
+  .meta{font-size:12px;color:var(--muted);margin-top:6px}
+
+  footer{grid-column:1/-1;text-align:center;color:var(--muted);margin-top:18px;font-size:13px}
+
+  @media (max-width:880px){
+    .wrap{grid-template-columns:1fr; padding-bottom:60px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Simple Day Planner</h1>
+      <div class="top-controls small">
+        <span id="nowLabel">--</span>
+        <button id="notifyRequest" class="ghost">Enable Notifications</button>
+      </div>
+    </header>
+
+    <!-- Left column: settings + form -->
+    <div class="card">
+      <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <strong>Day window</strong>
+        <span class="small" id="windowIndicator">No range set</span>
+      </div>
+
+      <label for="wake">Wake up time</label>
+      <input id="wake" type="time" />
+
+      <label for="sleep" style="margin-top:10px">Sleep time</label>
+      <input id="sleep" type="time" />
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="setWindow">Set Window</button>
+        <button id="clearWindow" class="ghost">Clear</button>
+      </div>
+
+      <hr style="margin:14px 0;border:0;border-top:1px solid rgba(255,255,255,0.03)">
+
+      <strong style="display:block;margin-bottom:6px">Add Task</strong>
+
+      <label for="taskTitle">Title</label>
+      <input id="taskTitle" type="text" placeholder="Short title (eg. Study math)">
+
+      <label for="taskTime" style="margin-top:10px">Alarm time (HH:MM)</label>
+      <input id="taskTime" type="time">
+
+      <label for="importance" style="margin-top:10px">Importance (1 low — 5 high)</label>
+      <select id="importance">
+        <option value="1">1 — Low</option>
+        <option value="2">2</option>
+        <option value="3" selected>3 — Medium</option>
+        <option value="4">4</option>
+        <option value="5">5 — High</option>
+      </select>
+
+      <label for="desc" style="margin-top:10px">Description</label>
+      <textarea id="desc" placeholder="Longer details..."></textarea>
+
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button id="addTask">Add Task</button>
+        <button id="resetForm" class="ghost">Reset</button>
+      </div>
+
+      <p class="small" style="margin-top:10px">Tasks only active if their time is between wake & sleep. Alarm triggers while site is open. Tasks persist in browser.</p>
+    </div>
+
+    <!-- Right column: tasks list -->
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Tasks</strong>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label class="small">Sort</label>
+            <select id="sort">
+              <option value="time">By time</option>
+              <option value="importance">By importance</option>
+            </select>
+            <button id="clearAll" class="ghost">Clear All</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="taskList" class="tasks"></div>
+    </div>
+
+    <footer>Quick planner • alarms use Notification API (grant when prompted)</footer>
+  </div>
+
+<script>
+/* --- Simple Planner JS --- */
+const $ = id => document.getElementById(id);
+
+const storageKey = 'simple-planner-v1';
+let state = {
+  window: null, // {wake: "07:00", sleep: "23:00"}
+  tasks: [] // {id, title, time "HH:MM", importance:1-5, desc, alarmed:false}
+};
+
+const nowLabel = $('nowLabel');
+const wakeInput = $('wake'), sleepInput = $('sleep');
+const setWindowBtn = $('setWindow'), clearWindowBtn = $('clearWindow');
+const addTaskBtn = $('addTask'), resetFormBtn = $('resetForm');
+const taskList = $('taskList');
+const notifyBtn = $('notifyRequest');
+const sortSelect = $('sort');
+const clearAllBtn = $('clearAll');
+
+function timeNowString(){
+  const d = new Date();
+  return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+function hhmmToMinutes(t){
+  if(!t) return null;
+  const [h,m] = t.split(':').map(Number);
+  return h*60 + m;
+}
+function inWindow(t){ // t "HH:MM"
+  if(!state.window) return true;
+  const w = hhmmToMinutes(state.window.wake);
+  const s = hhmmToMinutes(state.window.sleep);
+  const x = hhmmToMinutes(t);
+  if(w === null || s === null || x === null) return false;
+  if(w <= s) return x >= w && x <= s;
+  // overnight window (sleep next day)
+  return x >= w || x <= s;
+}
+function saveState(){ localStorage.setItem(storageKey, JSON.stringify(state)); }
+function loadState(){
+  const raw = localStorage.getItem(storageKey);
+  if(raw) {
+    try{ state = JSON.parse(raw); }catch(e){}
+  }
+}
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function render(){
+  // header time
+  nowLabel.textContent = timeNowString();
+
+  // window indicator
+  $('windowIndicator').textContent = state.window ? `${state.window.wake} → ${state.window.sleep}` : 'No range set';
+
+  // tasks rendering (sorted)
+  let tasks = [...state.tasks];
+  if(sortSelect.value === 'time') tasks.sort((a,b) => hhmmToMinutes(a.time) - hhmmToMinutes(b.time));
+  else tasks.sort((a,b) => b.importance - a.importance || hhmmToMinutes(a.time) - hhmmToMinutes(b.time));
+
+  taskList.innerHTML = '';
+  if(tasks.length === 0){
+    const n = document.createElement('div');
+    n.className = 'card small';
+    n.textContent = 'No tasks yet. Add one on the left.';
+    taskList.appendChild(n);
+  }
+  tasks.forEach(task => {
+    const el = document.createElement('div'); el.className = 'task';
+    const timeP = document.createElement('div'); timeP.className = 'time-pill';
+    timeP.textContent = task.time;
+    timeP.style.background = inWindow(task.time) ? 'transparent' : 'rgba(255,255,255,0.02)';
+    const body = document.createElement('div'); body.className = 'task-body';
+    const titleRow = document.createElement('div'); titleRow.className = 'task-title';
+    const left = document.createElement('div'); left.className='title-left';
+    const title = document.createElement('div'); title.innerHTML = `<strong>${escapeHTML(task.title||'(no title)')}</strong>`;
+    const imp = document.createElement('div'); imp.className = 'importance imp-' + (task.importance||1);
+    imp.textContent = task.importance;
+    left.appendChild(title); left.appendChild(imp);
+    const actions = document.createElement('div'); actions.className='actions';
+    const expandBtn = document.createElement('button'); expandBtn.className='ghost'; expandBtn.textContent = 'Details';
+    const editBtn = document.createElement('button'); editBtn.className='ghost'; editBtn.textContent = 'Edit';
+    const delBtn = document.createElement('button'); delBtn.className='ghost'; delBtn.textContent = 'Delete';
+    actions.appendChild(expandBtn); actions.appendChild(editBtn); actions.appendChild(delBtn);
+    titleRow.appendChild(left); titleRow.appendChild(actions);
+    const desc = document.createElement('div'); desc.className='desc'; desc.textContent = task.desc || '';
+    if(task.expanded) desc.classList.add('expanded');
+
+    const meta = document.createElement('div'); meta.className='meta small';
+    meta.textContent = inWindow(task.time) ? (task.alarmed ? 'Alarmed' : 'Active') : 'Outside window';
+
+    body.appendChild(titleRow); body.appendChild(desc); body.appendChild(meta);
+    el.appendChild(timeP); el.appendChild(body);
+
+    // attach events
+    expandBtn.addEventListener('click', ()=>{
+      task.expanded = !task.expanded;
+      saveTaskState(task);
+      render();
+    });
+    delBtn.addEventListener('click', ()=>{
+      if(!confirm('Delete this task?')) return;
+      state.tasks = state.tasks.filter(t=>t.id !== task.id);
+      saveState(); render();
+    });
+    editBtn.addEventListener('click', ()=>{
+      // populate left form for editing
+      $('taskTitle').value = task.title;
+      $('taskTime').value = task.time;
+      $('importance').value = task.importance;
+      $('desc').value = task.desc;
+      addTaskBtn.textContent = 'Save Edit';
+      addTaskBtn.dataset.editId = task.id;
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    taskList.appendChild(el);
+  });
+}
+
+function saveTaskState(task){
+  const idx = state.tasks.findIndex(t=>t.id===task.id);
+  if(idx>=0){ state.tasks[idx]=task; saveState(); }
+}
+
+function addOrSaveTask(){
+  const title = $('taskTitle').value.trim();
+  const time = $('taskTime').value;
+  const importance = Number($('importance').value);
+  const desc = $('desc').value.trim();
+
+  if(!time){ alert('Please set an alarm time (HH:MM).'); return; }
+  if(!inWindow(time)){
+    if(!confirm('This task time is outside the wake/sleep window. Add anyway?')) return;
+  }
+
+  if(addTaskBtn.dataset.editId){
+    // save edit
+    const id = addTaskBtn.dataset.editId;
+    const t = state.tasks.find(x=>x.id===id);
+    if(t){
+      t.title = title; t.time = time; t.importance = importance; t.desc = desc; t.alarmed = false;
+      saveState();
+    }
+    addTaskBtn.textContent = 'Add Task';
+    delete addTaskBtn.dataset.editId;
+  } else {
+    const newTask = { id: uid(), title, time, importance, desc, alarmed:false, expanded:false };
+    state.tasks.push(newTask); saveState();
+  }
+  resetForm();
+  render();
+}
+
+function resetForm(){
+  $('taskTitle').value=''; $('taskTime').value=''; $('importance').value='3'; $('desc').value='';
+  addTaskBtn.textContent = 'Add Task';
+  delete addTaskBtn.dataset.editId;
+}
+
+function setWindow(){
+  const w = wakeInput.value, s = sleepInput.value;
+  if(!w || !s){ alert('Choose both wake and sleep times'); return; }
+  state.window = { wake: w, sleep: s };
+  saveState(); render();
+}
+
+function clearWindow(){
+  state.window = null; saveState(); render();
+}
+
+function checkAlarms(){
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const cur = `${hh}:${mm}`;
+  state.tasks.forEach(task=>{
+    if(!task.alarmed && task.time === cur && inWindow(task.time)){
+      // trigger alarm
+      task.alarmed = true;
+      saveTaskState(task);
+      triggerAlarm(task);
+    }
+  });
+  // update on-screen now
+  render();
+}
+
+function triggerAlarm(task){
+  const text = `Task: ${task.title || '(no title)'} — ${task.time}`;
+  // Notification
+  if("Notification" in window && Notification.permission === 'granted'){
+    const n = new Notification('Planner Alarm', { body: text, silent: false });
+    n.onclick = ()=> window.focus();
+  } else {
+    alert(`ALARM — ${text}\n\n${task.desc||''}`);
+  }
+}
+
+function requestNotifications(){
+  if(!("Notification" in window)){ alert('Notifications not supported in this browser'); return; }
+  Notification.requestPermission().then(perm=>{
+    if(perm === 'granted') alert('Notifications enabled');
+    else alert('Notifications denied or dismissed');
+  });
+}
+
+// helpers
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));
+}
+
+/* wire UI */
+loadState();
+render();
+setInterval(()=>{ $('nowLabel').textContent = timeNowString(); }, 1000);
+setInterval(checkAlarms, 1000); // check every second (fine for browser page)
+
+setWindowBtn.addEventListener('click', setWindow);
+clearWindowBtn.addEventListener('click', () => { if(confirm('Clear window?')) clearWindow(); });
+
+addTaskBtn.addEventListener('click', addOrSaveTask);
+resetFormBtn.addEventListener('click', resetForm);
+
+notifyBtn.addEventListener('click', requestNotifications);
+
+sortSelect.addEventListener('change', render);
+
+clearAllBtn.addEventListener('click', ()=>{
+  if(!confirm('Delete ALL tasks?')) return;
+  state.tasks = []; saveState(); render();
+});
+
+// keyboard: Enter to add when in title/time
+['taskTitle','taskTime','desc'].forEach(id=>{
+  $(id).addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addOrSaveTask();
+  });
+});
+
+// on load: if notification permission not granted, show button; if granted hide
+if("Notification" in window && Notification.permission === 'granted') notifyBtn.style.display='none';
+else notifyBtn.style.display='inline-block';
+
+</script>
+</body>
+</html>

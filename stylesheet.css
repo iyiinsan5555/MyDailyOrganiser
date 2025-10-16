@@ -1,0 +1,9 @@
+.main-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 25%;
+    left: 25%;
+
+    background-color: lightblue;
+}

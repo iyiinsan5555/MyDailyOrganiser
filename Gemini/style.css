@@ -1,0 +1,176 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    background-color: white;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #007bff;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* Time Controls */
+#time-controls input[type="time"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.time-input-group {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#schedule-display {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Add Task */
+#task-description {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.task-properties {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.task-properties label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.task-properties input[type="time"] {
+    margin-right: 20px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#task-importance {
+    flex-grow: 1; /* Makes the slider take up available space */
+    margin-right: 10px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Task List */
+#tasks-ul {
+    list-style: none;
+    padding: 0;
+}
+
+.task-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s;
+}
+
+.task-item:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.task-details {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.task-description-short {
+    font-weight: bold;
+    display: block;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.task-description-full {
+    display: none; /* Initially hidden */
+    font-size: 0.9em;
+    color: #555;
+    white-space: pre-wrap; /* Respect newlines if added */
+}
+
+.expanded .task-description-full {
+    display: block;
+}
+
+.task-meta {
+    font-size: 0.85em;
+    color: #6c757d;
+    display: flex;
+    gap: 15px;
+}
+
+.importance-level {
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: white;
+}
+
+/* Importance Scala Colors */
+.imp-1 { background-color: #28a745; } /* Least Important - Green */
+.imp-2 { background-color: #ffc107; color: #333;} /* Low - Yellow */
+.imp-3 { background-color: #fd7e14; } /* Medium - Orange */
+.imp-4 { background-color: #dc3545; } /* High - Red */
+.imp-5 { background-color: #6f42c1; } /* Most Important - Purple */
+
+/* Alarm Alert Styles */
+.alarm-due {
+    background-color: #ffcccc !important; /* Attention-grabbing background */
+    border: 2px solid red;
+}
+
+#no-tasks-message {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}

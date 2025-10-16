@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep-Task Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>⏰ Sleep & Task Planner</h1>
+    </header>
+
+    <div id="time-controls" class="container">
+        <h2>Set Your Day</h2>
+        <div class="time-input-group">
+            <label for="wake-up-time">☀️ Wake-up Time:</label>
+            <input type="time" id="wake-up-time">
+        </div>
+        <div class="time-input-group">
+            <label for="sleep-time">🌙 Sleep Time:</label>
+            <input type="time" id="sleep-time">
+        </div>
+        <p id="schedule-display">Schedule: <span id="schedule-start">--:--</span> to <span id="schedule-end">--:--</span></p>
+    </div>
+
+    <div id="add-task" class="container">
+        <h2>➕ Add a Task</h2>
+        <input type="text" id="task-description" placeholder="Task Description (e.g., Finish report)">
+        <div class="task-properties">
+            <label for="task-alarm-time">Alarm Time:</label>
+            <input type="time" id="task-alarm-time">
+            <label for="task-importance">Importance (1-5):</label>
+            <input type="range" id="task-importance" min="1" max="5" value="3">
+            <span id="importance-value">3</span>
+        </div>
+        <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <div id="task-list" class="container">
+        <h2>📋 Your Tasks</h2>
+        <ul id="tasks-ul">
+            </ul>
+        <p id="no-tasks-message">You have no tasks scheduled.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

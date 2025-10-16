@@ -1,0 +1,10 @@
+---PLAN---
+
+It will be able to handle wake up time and you should sleep time.
+
+Between those I will be able to add tasks.
+
+Each task will have specific properties like:
+-alarm time --> If the times up alert user.(Website should be open)
+-Description --> Will be able to see small piece of it. If extended will be able to see all of it.
+-How Important --> denote it with a scala
