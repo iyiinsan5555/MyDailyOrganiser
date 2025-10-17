@@ -2,18 +2,22 @@
 
 body {
     font-family: Inter, Arial;
+    height: 2000px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
 }
 
 h3, p {
     margin: 0;
+    color: rgb(65, 65, 65);
 }
 
 .main-container {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 25%;
-    left: 25%;
+    
+    width: 60%;
 
     background-color: lightblue;
 
@@ -44,59 +48,229 @@ h3, p {
     background-color: white;
 
     width: 90%;
-    height: 100px;
+    height: max-content;
 
     border: 1px solid rgba(255, 255, 0, 0.5);
     border-radius: 5px;
     box-shadow: 0 0 15px wheat;
 
-    display: grid;
-    grid-template-rows: 1fr 20px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 
     margin: 20px 0 20px 0;
 }
 
 
 .wake-up-task .title {
-    text-align: center;
-    font-size: 50px;
+   text-align: center;
+   align-content: center;
 
+   color: rgb(64, 131, 255);
+
+   font-size: 20px;
+
+   flex: 50px;
+   /*background-color: lightcyan;*/
+
+}
+
+.wake-up-task .time  {
+    text-align: center;
+
+    font-size: 40px;
+
+    /*background-color: lightpink;*/
+    
+
+    margin-top: 0px;
+    margin-bottom: 0;
+}
+
+.wake-up-task .time span {
+    font-size: 22px;
+}
+
+.wake-up-task .wake-up-img  {
+    /*background-color: lightgreen;*/
+    width: 40px;
+    height: 40px;
+
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
 
 .wake-up-task .description  {
-    text-align: end;
-    margin-right: 20px;
+      /*background-color: lightblue;*/
+      margin-top: 10px;
+      color: rgb(91, 91, 91);
+    margin-bottom: 5px;
 }
 
 
 
 
-.sleep-task {
+
+.classic-task {
     background-color: white;
 
     width: 90%;
-    height: 100px;
+    height: max-content;
 
-    border: 1px solid rgba(255, 255, 0, 0.5);
+    border: 1px solid rgba(62, 62, 62, 0.5);
     border-radius: 5px;
-    box-shadow: 0 0 15px rgb(7, 36, 225);
 
-    display: grid;
-    grid-template-rows: 1fr 20px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+
+    margin: 20px 0 20px 0;
+}
+
+.classic-task .title {
+    width: 100%;
+    text-align: start;
+
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+
+    font-size: 25px;
+}
+
+.classic-task .description {
+    width: 100%;
+    margin-left: 10px;
+    margin-bottom: 6px;
+}
+
+.classic-task .task-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 90%;
+
+    margin-top: 15px;
+}
+
+.classic-task .task-info .alarm-time {
+    margin-right: 20px;
+}
+
+.classic-task .task-info .imp-scala {
+    margin-right: 20px;
+   
+    height: 25px;
+    width: 125px;
+
+    object-fit: cover;
+
+    background-color: rgba(225, 225, 225, 0.377);
+}
+
+
+.sleep-task {
+     background-color: white;
+
+    width: 90%;
+    height: max-content;
+
+    border: 1px solid rgba(4, 0, 240, 0.5);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgb(4, 0, 240);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
     margin: 20px 0 20px 0;
 }
 
 
 .sleep-task .title {
-    text-align: center;
-    font-size: 50px;
+   text-align: center;
+   align-content: center;
+
+   color: rgb(64, 131, 255);
+
+   font-size: 20px;
+
+   flex: 50px;
+   /*background-color: lightcyan;*/
 
 }
 
+.sleep-task .time  {
+    text-align: center;
+
+    font-size: 40px;
+
+    /*background-color: lightpink;*/
+    
+
+    margin-top: 0px;
+    margin-bottom: 0;
+}
+
+.sleep-task .time span {
+    font-size: 22px;
+}
+
+.sleep-task .wake-up-img  {
+    /*background-color: lightgreen;*/
+    width: 40px;
+    height: 40px;
+
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
 .sleep-task .description  {
-    text-align: end;
-    margin-right: 20px;
+      /*background-color: lightblue;*/
+      margin-top: 10px;
+      color: rgb(91, 91, 91);
+      margin-bottom: 5px;
+}
+
+
+
+
+.add-task {
+    background-color: white;
+
+    width: 90%;
+    height: max-content;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgb(122, 122, 122);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 20px 0 20px 0;
+}
+
+.add-task .task-title {
+   
+}
+
+.add-task .task-description {
+    
+}
+
+.add-task .row-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+    width: 95%;
 }

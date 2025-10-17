@@ -12,24 +12,35 @@
         <ul class="task-list">
 
             <div class="wake-up-task">
-                <h3 class="title">07.00</h3>
-                <p class="description">wake up!</p>
+                <h3 class="title">WAKE-UP TIME</h3>
+                <h3 class="time">07.00 <span>AM</span></h3>
+                <img class="wake-up-img" src="Images/wake-up-img.png" alt="wake-up img">
+                <p class="description">Rise and shine!</p>
             </div>
 
             <div class="classic-task">
                 <h3 class="title">Task 1</h3>
                 <p class="description">Description of task 1.</p>
-                <img class="imp-scala" alt="important-scala">
-                <p class="alarm-time">Alarm time: 00:00</p>
+                <div class="task-info">
+                    <p class="alarm-time">17:30 PM</p> 
+                    <img class="imp-scala" alt="important-scala" src="Images/scala1.png">
+                </div>
             </div>
 
             <div class="add-task">
-                
+                <input type="text" class="task-title" placeholder="TASK TITLE">
+                <input type="text" class="task-description" placeholder="Task description">
+                <div class="row-div">
+                    <input type="time" class="alarm-time">
+                    <input type="range" min="1" max="5" value="1">
+                </div>
             </div>
 
             <div class="sleep-task">
-                <h3 class="title">21.45</h3>
-                <p class="description">it's sleep time!</p>
+                <h3 class="title">SLEEP TIME</h3>
+                <h3 class="time">10.00 <span>PM</span></h3>
+                <img class="wake-up-img" src="Images/sleep-img.png" alt="sleep img">
+                <p class="description">Sweet dreams!</p>
             </div>
         </ul>
     </div>
