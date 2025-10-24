@@ -7,7 +7,7 @@
 
 body {
     font-family: "Inter", sans-serif;
-    background: linear-gradient(135deg, #a8c0ff, #3f2b96);
+    background: transparent;
     margin: 0;
     padding: 30px 0;
     display: flex;
@@ -64,6 +64,8 @@ p, h3 {
     width: 60px;
     height: 60px;
     margin: 10px 0;
+    max-width: 100%;
+    height: auto;
 }
 
 .wake-up-task p,
@@ -81,17 +83,9 @@ p, h3 {
     box-shadow: 0 2px 15px rgba(0,0,0,0.1);
 }
 
-.add-task input[type="text"] {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-    outline: none;
-}
-
+.add-task input[type="text"],
 .add-task input[type="time"] {
+    width: 100%;
     padding: 10px 12px;
     margin-bottom: 12px;
     border: 1px solid #ccc;
@@ -110,6 +104,8 @@ p, h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .flex-row {
@@ -132,7 +128,6 @@ p, h3 {
     width: 35px;
     height: 35px;
     cursor: pointer;
-    margin-left: 10px;
     filter: brightness(1);
 }
 
@@ -240,4 +235,41 @@ p, h3 {
 .classic-task:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.17);
+}
+
+/* ---------- MOBILE ADJUSTMENTS ---------- */
+@media (max-width: 480px) {
+    .main-container { padding: 15px; }
+
+    .wake-up-task, .sleep-task, .add-task { padding: 15px; }
+
+    .wake-up-task .time,
+    .sleep-task .time {
+        font-size: 2rem;
+    }
+
+    .add-task .row-div {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .flex-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .plus-icon {
+        width: 30px;
+        height: 30px;
+        align-self: flex-end;
+    }
+
+    .imp-scala {
+        font-size: 0.75rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    .classic-task {
+        padding: 32px 22px ;
+    }
 }
