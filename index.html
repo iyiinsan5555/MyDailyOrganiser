@@ -9,41 +9,56 @@
 <body>
 
     <div class="main-container">
-        <ul class="task-list">
+        
 
-            <div class="wake-up-task">
-                <h3 class="title">WAKE-UP TIME</h3>
-                <h3 class="time">07.00 <span>AM</span></h3>
-                <img class="wake-up-img" src="Images/wake-up-img.png" alt="wake-up img">
-                <p class="description">Rise and shine!</p>
+        <div class="wake-up-task">
+            <h3 class="title">WAKE-UP TIME</h3>
+            <h3 class="time">07.00 <span>AM</span></h3>
+            <img class="wake-up-img" src="Images/wake-up-img.png" alt="wake-up img">
+            <p class="description">Rise and shine!</p>
+        </div>
+
+
+        <div class="add-task">
+            <input type="text" class="task-title" placeholder="TASK TITLE" required>
+            <input type="text" class="task-description" placeholder="Task description">
+            <div class="row-div">
+                <input type="time" class="alarm-time">
+                <div class="flex-row">
+                    <h3 class="importance-scala-renderer">Importance: 1</h3>
+                    <input type="range" min="1" max="5" value="1" class="important-scala-input">
+                </div>
+                <img class="plus-icon" src="/Images/plus-icon.png">
             </div>
+        </div>
 
-            <div class="classic-task">
+
+        <ul class="classic-task-list">
+
+            <!--<div class="classic-task">
                 <h3 class="title">Task 1</h3>
                 <p class="description">Description of task 1.</p>
                 <div class="task-info">
                     <p class="alarm-time">17:30 PM</p> 
-                    <img class="imp-scala" alt="important-scala" src="Images/scala1.png">
+                    <p class="imp-scala">Importance: ★★★☆☆</p>
                 </div>
-            </div>
-
-            <div class="add-task">
-                <input type="text" class="task-title" placeholder="TASK TITLE">
-                <input type="text" class="task-description" placeholder="Task description">
-                <div class="row-div">
-                    <input type="time" class="alarm-time">
-                    <input type="range" min="1" max="5" value="1">
-                </div>
-            </div>
-
-            <div class="sleep-task">
-                <h3 class="title">SLEEP TIME</h3>
-                <h3 class="time">10.00 <span>PM</span></h3>
-                <img class="wake-up-img" src="Images/sleep-img.png" alt="sleep img">
-                <p class="description">Sweet dreams!</p>
-            </div>
+                <button class="delete-btn">Delete</button>
+            </div>-->
+            
         </ul>
+
+
+        <div class="sleep-task">
+            <h3 class="title">SLEEP TIME</h3>
+            <h3 class="time">10.00 <span>PM</span></h3>
+            <img class="wake-up-img" src="Images/sleep-img.png" alt="sleep img">
+            <p class="description">Sweet dreams!</p>
+        </div>
+        
     </div>
     
+    
+
+    <script src="main.js"></script>
 </body>
 </html>
