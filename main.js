@@ -34,8 +34,8 @@ function getNewTaskInfo() {
     const importance = Number(document.querySelector(".important-scala-input").value);
 
     //Clearing inputs
-    document.querySelector(".task-title").value = undefined;
-    document.querySelector(".task-description").value = undefined;
+    document.querySelector(".task-title").value = "";
+    document.querySelector(".task-description").value = "";
     document.querySelector(".alarm-time").value = undefined;
     document.querySelector(".important-scala-input").value = 1;
     document.querySelector(".importance-scala-renderer").innerHTML = `Importance: 1`;
